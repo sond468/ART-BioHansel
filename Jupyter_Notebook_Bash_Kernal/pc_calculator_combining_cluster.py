@@ -73,7 +73,7 @@ for looping in range(len(files)):
 				secondoutf.write(rows2)
 
 
-full_dir = os.listdir()   ## PROBABLY CHANGE THIS ################ <-----------
+full_dir = os.listdir()
 #Creating a list of all the files for the first percentage
 for first_list in full_dir:
 	if str(percentage) in first_list:
