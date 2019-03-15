@@ -1,4 +1,5 @@
 import os
+#Initializing variables and inputs
 art_file_name = input('file name for sequences: ') 
 contamination_number = input('Percent of contaimination wanted (0.00-1.00): ')
 art_files = []
@@ -13,7 +14,7 @@ with open(art_file_name+'.txt','r') as f:
 	for line in f:
 		art_files.append(line.strip())
 
-
+#Creating art_illumina files based on the inputted list of files
 for i in range(len(art_files)):
 	if art_files[i].lower().endswith('.fasta'):
 		outnum = art_files[i][:-6]
@@ -21,12 +22,13 @@ for i in range(len(art_files)):
 		outnum = art_files[i][:-4]
 	outing = "art_illumina -ss MSv3 -na -rs 1547652831 -i " + art_files[i]+ " -l 250 -f "+str(contamination)+" -o "+ str(contamination)+"x"+outnum
 	os.system(outing)
+	#keeping track of files so when mixing two of the same files will not be mixed
 	first_art[str(contamination)+"x"+outnum+".fq"] = first_count
 	first_count += 1
 
 os.system('mkdir first_half_art_files')
 os.system('mv *.fq first_half_art_files/')
-
+#Creating the complement art_illumina files
 for i in range(len(art_files)):
 	if art_files[i].lower().endswith('.fasta'):
 		outnum = art_files[i][:-6]
@@ -39,10 +41,11 @@ for i in range(len(art_files)):
 
 os.system('mkdir second_half_art_files')
 os.system('mv *.fq second_half_art_files/')
-
+#Combining the two art_illumina coverages to create the contaminated sample
 os.system('mkdir contamination_files')
 for first in os.listdir('first_half_art_files/'):
 	for second in os.listdir('second_half_art_files/'):
+		#Ensuring two of the same samples are not being mixed together
 		if first_art[first] == second_art[second]:
 			continue
 		with open('contamination_files/'+first[:-3]+'-'+second,'a') as outf:
