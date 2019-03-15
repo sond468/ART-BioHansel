@@ -11,3 +11,5 @@ for i in range(len(files)):
 	outnum = filein[4:13]
 	outing = "art_illumina -ss MSv3 -i " + filein+ " -l 250 -f 60 -o "+ outnum
 	os.system(outing)
+os.system('mkdir art_files')
+os.system('mv *.fq art_files/')
